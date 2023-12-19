@@ -39,8 +39,6 @@ def create_ui():
                                    placeholder="path to install, default path is /mnt/auto/sd/python")
         index_url2 = gr.Textbox(label="Index URL", visible=False, interactive=True,
                                 placeholder="Index URL, default: https://pypi.tuna.tsinghua.edu.cn/simple/")
-        upload_button = gr.UploadButton("Select Requirements File", file_types=["text"], file_count="single")
-        upload_button.upload(fn=upload_file, inputs=upload_button, outputs=file_upload)
         install_requirement = gr.Button(label="Install", variant="primary")
 
     with gr.Row():
@@ -121,6 +119,8 @@ def install_module(module_name, version_box, install_path, index_url):
 
 
 def module_install_byfile(file, install_path, index_url):
+    if file is None:
+        return f"please upload requirements file</div>"
     file_name = os.path.basename(file.name)
     index_url = launch.index_url if launch.index_url != '' else (index_url if index_url != "" else tsinghua_url)
     install_path = install_path if install_path != "" else default_install_path
@@ -134,10 +134,6 @@ def module_install_byfile(file, install_path, index_url):
         print(f"Couldn't install {file_name}")
         return f"Couldn't install {file_name}</div>"
 
-
-def upload_file(file_obj):
-    shutil.copy(file_obj.name, tmpdir)
-    return file_obj.name
 
 
 def is_valid_module_name(module_name):

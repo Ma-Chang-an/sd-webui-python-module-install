@@ -132,8 +132,8 @@ def module_install_byfile(file, install_path, index_url):
         print(f"{file_name} installed successfully")
         return f"{file_name} install success</div>"
     except subprocess.CalledProcessError:
-        print(f"Couldn't install {file.name}")
-        return f"Couldn't install {file.name}</div>"
+        print(f"Couldn't install {file_name}")
+        return f"Couldn't install {file_name}</div>"
 
 
 def is_valid_module_name(module_name):

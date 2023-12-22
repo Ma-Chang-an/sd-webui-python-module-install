@@ -121,18 +121,19 @@ def install_module(module_name, version_box, install_path, index_url):
 def module_install_byfile(file, install_path, index_url):
     if file is None:
         return f"please upload requirements file</div>"
+    shutil.copy(file.name, tmpdir)
+    file_name = os.path.basename(file.name)
     index_url = launch.index_url if launch.index_url != '' else (index_url if index_url != "" else tsinghua_url)
     install_path = install_path if install_path != "" else default_install_path
-    cmd = [launch.python, "-m", "pip", "install", "-r", file.name, "-t", install_path, "--prefer-binary",
+    cmd = [launch.python, "-m", "pip", "install", "-r", tmpdir+"/"+file_name, "-t", install_path, "--prefer-binary",
            "--index-url", index_url]
     try:
         subprocess.run(cmd, check=True)
-        print(f"{file.name} installed successfully")
-        return f"{file.name} install success</div>"
+        print(f"{file_name} installed successfully")
+        return f"{file_name} install success</div>"
     except subprocess.CalledProcessError:
         print(f"Couldn't install {file.name}")
         return f"Couldn't install {file.name}</div>"
-
 
 
 def is_valid_module_name(module_name):
